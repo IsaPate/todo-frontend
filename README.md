@@ -1,16 +1,55 @@
-# React + Vite
+# Todo Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A Kanban-style todo app. Users sign up, log in, create boards and organize cards into three columns: **TODO**, **IN_PROGRESS** and **DONE**.
 
-Currently, two official plugins are available:
+This is the frontend; it talks to a separate Java backend through a REST API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Register and log in with JWT authentication
+- Protected routes – only logged-in users can see their boards
+- Create boards
+- Add cards to any column and edit existing ones
+- Automatic logout when the token expires or is rejected (401/403)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech stack
 
-## Expanding the Oxlint configuration
+- **React 19** + **TypeScript**
+- **Vite** – dev server and build
+- **React Router** – routing
+- **Zustand** – auth state, persisted in `localStorage`
+- **Axios** – HTTP client, with interceptors for the auth token
+- **Tailwind CSS 4** + **shadcn/ui** (Radix UI) – styling and UI components
+- **Lucide** – icons
+- **Oxlint** – linting
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Getting started
+
+Requires Node.js and the backend running.
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Create a `.env` file with the backend URL:
+
+   ```bash
+   VITE_BACKEND_HOST=http://localhost:8080
+   ```
+
+3. Start the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+## Scripts
+
+| Command           | Description                  |
+| ----------------- | ---------------------------- |
+| `npm run dev`     | Start the dev server         |
+| `npm run build`   | Type-check and build         |
+| `npm run preview` | Preview the production build |
+| `npm run lint`    | Run Oxlint                   |
