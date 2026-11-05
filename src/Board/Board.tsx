@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Board() {
   const [board, setBoard] = useState<BoardResponse>({} as BoardResponse);
+  const [status, setStatus] = useState<string>("loading");
+
   let params = useParams();
 
   console.log(typeof params.id);
