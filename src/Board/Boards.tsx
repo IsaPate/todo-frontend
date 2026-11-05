@@ -30,7 +30,7 @@ export default function Boards() {
   }
 
   if (status === "Not Found") {
-    return <NotFound word={"Board"} />;
+    return <NotFound word={"Boards"} />;
   }
 
   return (
