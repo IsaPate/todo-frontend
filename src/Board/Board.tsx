@@ -12,7 +12,6 @@ export default function Board() {
 
   let params = useParams();
 
-  console.log(typeof params.id);
   useEffect(() => {
     async function fetchBoard() {
       try {
