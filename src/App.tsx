@@ -16,10 +16,10 @@ export default function App() {
           <Route path="/boards" element={<Boards />} />
           <Route path="/boards/new" element={<AddNewBoard />} />
           <Route path="/board/:id" element={<Board />} />
-          <Route path="*" element={<NotFound word="Page" />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound word="Page" />} />
       </Routes>
     </div>
   );
