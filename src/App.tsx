@@ -4,6 +4,7 @@ import AddNewBoard from "./Board/AddNewBoard";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import RequireAuth from "./Auth/RequireAuth";
+import Board from "./Board/Board";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route element={<RequireAuth />}>
           <Route path="/boards" element={<Boards />} />
           <Route path="/boards/new" element={<AddNewBoard />} />
+          <Route path="/board/:id" element={<Board />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
