@@ -4,21 +4,34 @@ import type { BoardResponse } from "./type";
 import BoardItem from "./BoardItems";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import NotFound from "@/error/NotFound";
 
 export default function Boards() {
   const [boards, setBoards] = useState<BoardResponse[]>([]);
+  const [status, setStatus] = useState<string>("loading");
   async function fetchBoards() {
     try {
-      const { data } = await api.get<BoardResponse[]>("/boards");
+      const { data, status } = await api.get<BoardResponse[]>("/boards");
+      setStatus("success");
       setBoards(data);
       console.log(data);
     } catch (error) {
+      setStatus("Not Found");
       console.error(error);
+    } finally {
     }
   }
   useEffect(() => {
     fetchBoards();
   }, []);
+
+  if (status === "loading") {
+    return;
+  }
+
+  if (status === "Not Found") {
+    return <NotFound word={"Board"} />;
+  }
 
   return (
     <>
