@@ -27,6 +27,8 @@ export default function Board() {
           } else {
             setStatus("Server-Error");
           }
+        } else {
+          setStatus("Server-Error");
         }
 
         console.error(error);
