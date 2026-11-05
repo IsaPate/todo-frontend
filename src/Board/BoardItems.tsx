@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function BoardItem({
   board,
@@ -50,7 +51,7 @@ export default function BoardItem({
     <Card key={board.id}>
       <CardHeader>
         <CardTitle>
-          {board.name}
+          <Link to={`/board/${board.id}`}>{board.name}</Link>
           <Badge variant="secondary">{board.cards.length}</Badge>
         </CardTitle>
       </CardHeader>
