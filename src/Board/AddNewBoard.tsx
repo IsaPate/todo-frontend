@@ -13,7 +13,7 @@ export default function AddNewBoard() {
     e.preventDefault();
     console.log("system sending" + name);
     await api.post("/board", { name });
-    navigate("/");
+    navigate("/boards");
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
