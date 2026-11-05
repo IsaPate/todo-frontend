@@ -2,6 +2,7 @@ import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import type { BoardResponse } from "./type";
+import { Button } from "@/components/ui/button";
 
 export default function Board() {
   const [board, setBoard] = useState<BoardResponse>({} as BoardResponse);
