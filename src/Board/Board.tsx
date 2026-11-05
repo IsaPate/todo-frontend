@@ -2,13 +2,14 @@ import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import type { BoardResponse } from "./type";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import NotFound from "@/error/NotFound";
+import axios from "axios";
+import type { Status } from "@/error/types";
 
 export default function Board() {
   const [board, setBoard] = useState<BoardResponse>({} as BoardResponse);
-  const [status, setStatus] = useState<string>("loading");
+  const [status, setStatus] = useState<Status>("loading");
 
   let params = useParams();
 
@@ -20,20 +21,30 @@ export default function Board() {
 
         setBoard(data);
       } catch (error) {
-        setStatus("Not Found");
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 404) {
+            setStatus("notFound");
+          } else {
+            setStatus("Server-Error");
+          }
+        }
 
         console.error(error);
       }
     }
     fetchBoard();
-  }, []);
+  }, [params.id]);
 
   if (status === "loading") {
     return;
   }
 
-  if (status === "Not Found") {
+  if (status === "notFound") {
     return <NotFound word={"Board"} />;
+  }
+
+  if (status === "Server-Error") {
+    return <NotFound word={"Server-Error"} />;
   }
   return (
     <Card key={board.id}>
