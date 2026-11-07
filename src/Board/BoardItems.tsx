@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { Link } from "react-router";
+import { api } from "@/lib/api";
 
 export default function BoardItem({
   board,
@@ -20,6 +21,7 @@ export default function BoardItem({
     boardId: number;
     status: string;
   } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const incard_status = (c: CardResponse) => {
     return status.find((s) => s === c.status);
@@ -47,12 +49,23 @@ export default function BoardItem({
       ? groudedCards(board).get(s).length + 1
       : 1;
   };
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/board/${board.id}`);
+      await fetchBoards();
+      setError(null);
+    } catch (error) {
+      setError("Error on board deleting.");
+    }
+  };
   return (
     <Card key={board.id}>
       <CardHeader>
         <CardTitle>
           <Link to={`/board/${board.id}`}>{board.name}</Link>
           <Badge variant="secondary">{board.cards.length}</Badge>
+          <Button onClick={handleDelete}>Delete</Button>
         </CardTitle>
       </CardHeader>
 
@@ -122,6 +135,7 @@ export default function BoardItem({
               </div>
             ))}
         </div>
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </CardContent>
     </Card>
   );
