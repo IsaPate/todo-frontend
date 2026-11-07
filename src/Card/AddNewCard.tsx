@@ -70,7 +70,6 @@ export default function AddNewCard({
           value={title}
           name="title"
           onChange={(e) => setTitle(e.target.value)}
-          // required
         ></Input>
         {titleError && <p className="text-sm text-destructive">{titleError}</p>}
 
@@ -80,7 +79,6 @@ export default function AddNewCard({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           name="description"
-          // required
         ></Input>
         {descError && <p className="text-sm text-destructive">{descError}</p>}
         {reqError && <p className="text-sm text-destructive">{reqError}</p>}
