@@ -24,8 +24,9 @@ export default function EditCard({
   const [form, setForm] = useState<CardResponse>(card);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await api.put(`/card/${card.id}`, form);
+    const { data } = await api.put<CardResponse>(`/card/${card.id}`, form);
 
+    setCards([...cards.filter((c) => c.id !== card.id), data]);
     onClosing();
   };
   return (
