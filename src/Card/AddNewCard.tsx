@@ -64,23 +64,28 @@ export default function AddNewCard({
   return (
     <Card>
       <form onSubmit={handleSubmit}>
-        <Label htmlFor="title">Title</Label>
-        <Input
-          id="title"
-          value={title}
-          name="title"
-          onChange={(e) => setTitle(e.target.value)}
-        ></Input>
-        {titleError && <p className="text-sm text-destructive">{titleError}</p>}
-
-        <Label htmlFor="description"> Description</Label>
-        <Input
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          name="description"
-        ></Input>
-        {descError && <p className="text-sm text-destructive">{descError}</p>}
+        <div>
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            value={title}
+            name="title"
+            onChange={(e) => setTitle(e.target.value)}
+          ></Input>
+          {titleError && (
+            <p className="text-sm text-destructive">{titleError}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="description"> Description</Label>
+          <Input
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+          ></Input>
+          {descError && <p className="text-sm text-destructive">{descError}</p>}
+        </div>
         {reqError && <p className="text-sm text-destructive">{reqError}</p>}
 
         <Button type="submit">Create</Button>
