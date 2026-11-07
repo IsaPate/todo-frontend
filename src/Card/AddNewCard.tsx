@@ -1,9 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
+import type { CardResponse } from "./type";
 
 export default function AddNewCard({
   boardId,
@@ -11,12 +12,16 @@ export default function AddNewCard({
   position,
   fetchBoards,
   onClosing,
+  cards,
+  setCards,
 }: {
   boardId: number;
   status: string;
   position: number;
   fetchBoards: () => Promise<void>;
   onClosing: () => void;
+  cards: CardResponse[];
+  setCards: Dispatch<SetStateAction<CardResponse[]>>;
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -48,14 +53,14 @@ export default function AddNewCard({
     setTitleError(null);
     setReqError(null);
     try {
-      await api.post("/card", {
+      const { data } = await api.post<CardResponse>("/card", {
         title,
         description,
         status,
         position,
         boardId,
       });
-      await fetchBoards();
+      setCards([...cards, data]);
       onClosing();
     } catch (error) {
       setReqError("Error on form submit.");
