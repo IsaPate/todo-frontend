@@ -20,18 +20,46 @@ export default function AddNewCard({
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [titleError, setTitleError] = useState<string | null>(null);
+  const [descError, setDescError] = useState<string | null>(null);
+
+  const [reqError, setReqError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await api.post("/card", {
-      title,
-      description,
-      status,
-      position,
-      boardId,
-    });
-    await fetchBoards();
-    onClosing();
+
+    if (title.trim() === "" && description.trim() === "") {
+      setDescError("Description cannot be blank.");
+      setTitleError("Title cannot be blank.");
+      return;
+    }
+    if (title.trim() === "") {
+      setDescError(null);
+      setTitleError("Title cannot be blank.");
+      return;
+    }
+    if (description.trim() === "") {
+      setTitleError(null);
+      setDescError("Description cannot be blank.");
+      return;
+    }
+
+    setDescError(null);
+    setTitleError(null);
+    setReqError(null);
+    try {
+      await api.post("/card", {
+        title,
+        description,
+        status,
+        position,
+        boardId,
+      });
+      await fetchBoards();
+      onClosing();
+    } catch (error) {
+      setReqError("Error on form submit.");
+    }
   };
   return (
     <Card>
@@ -42,14 +70,21 @@ export default function AddNewCard({
           value={title}
           name="title"
           onChange={(e) => setTitle(e.target.value)}
+          // required
         ></Input>
+        {titleError && <p className="text-sm text-destructive">{titleError}</p>}
+
         <Label htmlFor="description"> Description</Label>
         <Input
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           name="description"
+          // required
         ></Input>
+        {descError && <p className="text-sm text-destructive">{descError}</p>}
+        {reqError && <p className="text-sm text-destructive">{reqError}</p>}
+
         <Button type="submit">Create</Button>
       </form>
     </Card>
