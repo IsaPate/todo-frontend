@@ -26,6 +26,7 @@ export default function BoardItem({
     status: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [cards, setCards] = useState<CardResponse[]>(board.cards);
 
   const incard_status = (c: CardResponse) => {
     return status.find((s) => s === c.status);
@@ -37,7 +38,7 @@ export default function BoardItem({
   const groudedCards = (board: BoardResponse): Map<String, CardResponse[]> => {
     const map = new Map<String, CardResponse[]>();
 
-    for (let card of board.cards) {
+    for (let card of cards) {
       if (!map.has(card.status)) {
         map.set(card.status, [card]);
       } else {
@@ -68,14 +69,14 @@ export default function BoardItem({
       <CardHeader>
         <CardTitle>
           <Link to={`/board/${board.id}`}>{board.name}</Link>
-          <Badge variant="secondary">{board.cards.length}</Badge>
+          <Badge variant="secondary">{cards.length}</Badge>
           <Button onClick={handleDelete}>Delete</Button>
         </CardTitle>
       </CardHeader>
 
       <CardContent>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {board.cards &&
+          {cards &&
             status.map((s) => (
               <div
                 key={s}
@@ -98,6 +99,8 @@ export default function BoardItem({
                         key={c.id}
                         card={c}
                         fetchBoards={fetchBoards}
+                        cards={cards}
+                        setCards={setCards}
                       />
                     ))
                 ) : (
@@ -113,6 +116,8 @@ export default function BoardItem({
                       position={getPosition(board, s)}
                       fetchBoards={fetchBoards}
                       onClosing={() => setOpenColumn(null)}
+                      cards={cards}
+                      setCards={setCards}
                     />
                     <Button
                       className="mt-auto"
