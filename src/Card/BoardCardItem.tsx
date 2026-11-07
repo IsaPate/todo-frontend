@@ -32,7 +32,6 @@ export default function BoardCardItem({
       <EditCard
         card={card}
         onCancel={() => setIsOpen(!open)}
-        fetchBoards={fetchBoards}
         onClosing={() => setIsOpen(!open)}
         cards={cards}
         setCards={setCards}

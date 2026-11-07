@@ -9,14 +9,12 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 export default function EditCard({
   card,
   onCancel,
-  fetchBoards,
   onClosing,
   cards,
   setCards,
 }: {
   card: CardResponse;
   onCancel: () => void;
-  fetchBoards: () => Promise<void>;
   onClosing: () => void;
   cards: CardResponse[];
   setCards: Dispatch<SetStateAction<CardResponse[]>>;
