@@ -11,12 +11,10 @@ import { api } from "@/lib/api";
 
 export default function BoardItem({
   board,
-  fetchBoards,
   setBoards,
   boards,
 }: {
   board: BoardResponse;
-  fetchBoards: () => Promise<void>;
   setBoards: Dispatch<SetStateAction<BoardResponse[]>>;
   boards: BoardResponse[];
 }) {
