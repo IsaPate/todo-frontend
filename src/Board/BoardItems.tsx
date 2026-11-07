@@ -98,7 +98,6 @@ export default function BoardItem({
                       <BoardCardItem
                         key={c.id}
                         card={c}
-                        fetchBoards={fetchBoards}
                         cards={cards}
                         setCards={setCards}
                       />

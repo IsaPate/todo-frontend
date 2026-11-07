@@ -6,12 +6,11 @@ import { api } from "@/lib/api";
 
 export default function BoardCardItem({
   card,
-  fetchBoards,
+
   cards,
   setCards,
 }: {
   card: CardResponse;
-  fetchBoards: () => Promise<void>;
   cards: CardResponse[];
   setCards: Dispatch<SetStateAction<CardResponse[]>>;
 }) {
