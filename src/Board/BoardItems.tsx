@@ -113,7 +113,6 @@ export default function BoardItem({
                       boardId={openColumn.boardId}
                       status={openColumn.status}
                       position={getPosition(board, s)}
-                      fetchBoards={fetchBoards}
                       onClosing={() => setOpenColumn(null)}
                       cards={cards}
                       setCards={setCards}

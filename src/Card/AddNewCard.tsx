@@ -10,7 +10,6 @@ export default function AddNewCard({
   boardId,
   status,
   position,
-  fetchBoards,
   onClosing,
   cards,
   setCards,
@@ -18,7 +17,6 @@ export default function AddNewCard({
   boardId: number;
   status: string;
   position: number;
-  fetchBoards: () => Promise<void>;
   onClosing: () => void;
   cards: CardResponse[];
   setCards: Dispatch<SetStateAction<CardResponse[]>>;
