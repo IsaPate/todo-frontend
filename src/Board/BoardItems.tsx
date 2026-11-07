@@ -5,16 +5,20 @@ import { type CardResponse } from "@/Card/type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router";
 import { api } from "@/lib/api";
 
 export default function BoardItem({
   board,
   fetchBoards,
+  setBoards,
+  boards,
 }: {
   board: BoardResponse;
   fetchBoards: () => Promise<void>;
+  setBoards: Dispatch<SetStateAction<BoardResponse[]>>;
+  boards: BoardResponse[];
 }) {
   const status = ["TODO", "IN_PROGRESS", "DONE"];
   const [openColumn, setOpenColumn] = useState<{
@@ -53,7 +57,7 @@ export default function BoardItem({
   const handleDelete = async () => {
     try {
       await api.delete(`/board/${board.id}`);
-      await fetchBoards();
+      setBoards(boards.filter((b) => b.id !== board.id));
       setError(null);
     } catch (error) {
       setError("Error on board deleting.");

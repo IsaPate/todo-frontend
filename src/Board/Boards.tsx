@@ -46,7 +46,12 @@ export default function Boards() {
           <div key={board.id} className="flex flex-col gap-4">
             {/* {board.name} */}
             {board.cards && (
-              <BoardItem board={board} fetchBoards={fetchBoards} />
+              <BoardItem
+                board={board}
+                fetchBoards={fetchBoards}
+                setBoards={setBoards}
+                boards={boards}
+              />
             )}
           </div>
         ))}
