@@ -34,6 +34,8 @@ export default function BoardCardItem({
         onCancel={() => setIsOpen(!open)}
         fetchBoards={fetchBoards}
         onClosing={() => setIsOpen(!open)}
+        cards={cards}
+        setCards={setCards}
       />
     );
   }

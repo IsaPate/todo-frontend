@@ -4,24 +4,28 @@ import { Label } from "@radix-ui/react-label";
 import type { CardResponse, CardStatus } from "./type";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 export default function EditCard({
   card,
   onCancel,
   fetchBoards,
   onClosing,
+  cards,
+  setCards,
 }: {
   card: CardResponse;
   onCancel: () => void;
   fetchBoards: () => Promise<void>;
   onClosing: () => void;
+  cards: CardResponse[];
+  setCards: Dispatch<SetStateAction<CardResponse[]>>;
 }) {
   const [form, setForm] = useState<CardResponse>(card);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await api.put(`/card/${card.id}`, form);
-    await fetchBoards();
+
     onClosing();
   };
   return (
