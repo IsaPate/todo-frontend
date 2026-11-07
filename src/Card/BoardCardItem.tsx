@@ -12,12 +12,15 @@ export default function BoardCardItem({
   fetchBoards: () => Promise<void>;
 }) {
   const [open, setIsOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDelete = async () => {
     try {
       await api.delete(`/card/${card.id}`);
       await fetchBoards();
-    } catch (error) {}
+    } catch (error) {
+      setError("Error on card deleting.");
+    }
   };
 
   if (open) {
@@ -47,6 +50,7 @@ export default function BoardCardItem({
       <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
         {card.description}
       </p>
+      {error && <p className="text-sm text-destructive">{error}</p>}
       <Button onClick={() => setIsOpen(!open)}>Edit</Button>
       <Button onClick={handleDelete}>Delete</Button>
     </div>
