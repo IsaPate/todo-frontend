@@ -1,15 +1,19 @@
 import { Button } from "@/components/ui/button";
 import type { CardResponse } from "./type";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import EditCard from "./EditCard";
 import { api } from "@/lib/api";
 
 export default function BoardCardItem({
   card,
   fetchBoards,
+  cards,
+  setCards,
 }: {
   card: CardResponse;
   fetchBoards: () => Promise<void>;
+  cards: CardResponse[];
+  setCards: Dispatch<SetStateAction<CardResponse[]>>;
 }) {
   const [open, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +21,7 @@ export default function BoardCardItem({
   const handleDelete = async () => {
     try {
       await api.delete(`/card/${card.id}`);
-      await fetchBoards();
+      setCards(cards.filter((c) => c.id !== card.id));
     } catch (error) {
       setError("Error on card deleting.");
     }
