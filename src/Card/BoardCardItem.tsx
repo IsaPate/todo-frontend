@@ -6,13 +6,14 @@ import { api } from "@/lib/api";
 
 export default function BoardCardItem({
   card,
-
+  fetchBoards,
   cards,
   setCards,
 }: {
   card: CardResponse;
   cards: CardResponse[];
   setCards: Dispatch<SetStateAction<CardResponse[]>>;
+  fetchBoards: () => Promise<void>;
 }) {
   const [open, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +35,7 @@ export default function BoardCardItem({
         onClosing={() => setIsOpen(!open)}
         cards={cards}
         setCards={setCards}
+        fetchBoards={fetchBoards}
       />
     );
   }
@@ -50,6 +52,7 @@ export default function BoardCardItem({
           <span className="size-2 rounded-full bg-amber-500" />
         </p>
       </p>
+      <p className="text-xs text-muted-foreground">Position: {card.position}</p>
 
       <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
         {card.description}

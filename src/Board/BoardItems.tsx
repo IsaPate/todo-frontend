@@ -13,10 +13,12 @@ export default function BoardItem({
   board,
   setBoards,
   boards,
+  fetchBoards,
 }: {
   board: BoardResponse;
   setBoards: Dispatch<SetStateAction<BoardResponse[]>>;
   boards: BoardResponse[];
+  fetchBoards: () => Promise<void>;
 }) {
   const status = ["TODO", "IN_PROGRESS", "DONE"];
   const [openColumn, setOpenColumn] = useState<{
@@ -98,6 +100,7 @@ export default function BoardItem({
                         card={c}
                         cards={cards}
                         setCards={setCards}
+                        fetchBoards={fetchBoards}
                       />
                     ))
                 ) : (

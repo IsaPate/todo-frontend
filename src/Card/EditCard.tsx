@@ -12,18 +12,25 @@ export default function EditCard({
   onClosing,
   cards,
   setCards,
+  fetchBoards,
 }: {
   card: CardResponse;
   onCancel: () => void;
   onClosing: () => void;
   cards: CardResponse[];
   setCards: Dispatch<SetStateAction<CardResponse[]>>;
+  fetchBoards: () => Promise<void>;
 }) {
   const [form, setForm] = useState<CardResponse>(card);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { data } = await api.put<CardResponse>(`/card/${card.id}`, form);
 
+    if (data.position !== card.position || data.status !== card.status) {
+      console.log("triggered");
+      await fetchBoards();
+    }
     setCards([...cards.filter((c) => c.id !== card.id), data]);
     onClosing();
   };
