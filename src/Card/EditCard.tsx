@@ -5,6 +5,7 @@ import type { CardResponse, CardStatus } from "./type";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { useState, type Dispatch, type SetStateAction } from "react";
+import type { BoardResponse } from "@/Board/type";
 
 export default function EditCard({
   card,
@@ -21,17 +22,26 @@ export default function EditCard({
   setCards: Dispatch<SetStateAction<CardResponse[]>>;
   fetchBoards: () => Promise<void>;
 }) {
-  const [form, setForm] = useState<CardResponse>(card);
+  const [form, setForm] = useState<CardResponse>({
+    ...card,
+    position: card.position + 1,
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { data } = await api.put<CardResponse>(`/card/${card.id}`, form);
+    const { data } = await api.put<CardResponse>(`/card/${card.id}`, {
+      ...form,
+      position: form.position - 1,
+    });
 
-    if (data.position !== card.position || data.status !== card.status) {
+    if (data.boardId !== card.boardId) {
       console.log("triggered");
       await fetchBoards();
+    } else {
+      const res = await api.get<BoardResponse>(`/board/${card.boardId}`);
+      setCards([...res.data.cards]);
     }
-    setCards([...cards.filter((c) => c.id !== card.id), data]);
+
     onClosing();
   };
   return (
