@@ -52,7 +52,9 @@ export default function BoardCardItem({
           <span className="size-2 rounded-full bg-amber-500" />
         </p>
       </p>
-      <p className="text-xs text-muted-foreground">Position: {card.position}</p>
+      <p className="text-xs text-muted-foreground">
+        Position: {card.position + 1}
+      </p>
 
       <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
         {card.description}
