@@ -1,31 +1,46 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { api } from "@/lib/api";
 import type { BoardResponse } from "@/Board/type";
 import type { CardResponse } from "@/Card/type";
 
 type BoardState = {
   boards: BoardResponse[];
-  cards: CardResponse[];
+  //   cards: CardResponse[];
+  actions: BoardActions;
+};
+
+type BoardActions = {
   fetchBoards: () => Promise<void>;
   deleteCard: (card: CardResponse) => Promise<void>;
 };
 
-export const useBoardStore = create<BoardState>()(
-  persist(
-    (set) => ({
-      boards: [],
-      cards: [],
-      fetchBoards: async () => {
-        const { data } = await api.get<BoardResponse[]>("/boards");
-        set({ boards: data });
-      },
-      deleteCard: async (card: CardResponse) => {
-        await api.delete(`/card/${card.id}`);
-        const { data } = await api.get<BoardResponse>(`/board/${card.boardId}`);
-        set({ cards: data.cards });
-      },
-    }),
-    { name: "boards" }
-  )
-);
+export const useBoardStore = create<BoardState>()((set) => ({
+  boards: [],
+  actions: {
+    fetchBoards: async () => {
+      const { data } = await api.get<BoardResponse[]>("/boards");
+      set({ boards: data });
+    },
+    deleteCard: async (card: CardResponse) => {
+      await api.delete(`/card/${card.id}`);
+      const { data } = await api.get<BoardResponse>(`/board/${card.boardId}`);
+
+      set((state) => ({
+        boards: state.boards.map((b) => {
+          if (b.id === data.id) {
+            return {
+              ...b,
+              cards: data.cards,
+            };
+          }
+          return b;
+        }),
+      }));
+    },
+  },
+}));
+
+export const useFetchBoards = () =>
+  useBoardStore((state) => state.actions.fetchBoards);
+
+export const useBoards = () => useBoardStore((state) => state.boards);
