@@ -10,14 +10,14 @@ type BoardState = {
 };
 
 type BoardActions = {
-  fetchBoards: () => Promise<void>;
+  freshBoards: () => Promise<void>;
   deleteCard: (card: CardResponse) => Promise<void>;
 };
 
 export const useBoardStore = create<BoardState>()((set) => ({
   boards: [],
   actions: {
-    fetchBoards: async () => {
+    freshBoards: async () => {
       const { data } = await api.get<BoardResponse[]>("/boards");
       set({ boards: data });
     },
@@ -41,6 +41,9 @@ export const useBoardStore = create<BoardState>()((set) => ({
 }));
 
 export const useFetchBoards = () =>
-  useBoardStore((state) => state.actions.fetchBoards);
+  useBoardStore((state) => state.actions.freshBoards);
 
 export const useBoards = () => useBoardStore((state) => state.boards);
+
+export const useDeleteCard = () =>
+  useBoardStore((state) => state.actions.deleteCard);
