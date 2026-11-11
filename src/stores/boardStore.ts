@@ -12,9 +12,11 @@ type BoardState = {
 type BoardActions = {
   freshBoards: () => Promise<void>;
   deleteCard: (card: CardResponse) => Promise<void>;
+  createCard: (cardToCreate: Omit<CardResponse, "id">) => Promise<void>;
+  updateCard: (cardToCreate: Omit<CardResponse, "id">) => Promise<void>;
 };
 
-const useBoardStore = create<BoardState>()((set) => ({
+const useBoardStore = create<BoardState>()((set, get) => ({
   boards: [],
   actions: {
     freshBoards: async () => {
@@ -37,6 +39,47 @@ const useBoardStore = create<BoardState>()((set) => ({
         }),
       }));
     },
+    createCard: async (cardToCreate: Omit<CardResponse, "id">) => {
+      const { data } = await api.post<CardResponse>("/card", {
+        title: cardToCreate.title,
+        description: cardToCreate.description,
+        status: cardToCreate.status,
+        position: cardToCreate.position,
+        boardId: cardToCreate.boardId,
+      });
+      set((state) => ({
+        boards: state.boards.map((b) => {
+          if (b.id === data.boardId) {
+            b.cards.push(data);
+          }
+          return b;
+        }),
+      }));
+    },
+    updateCard: async (cardToCreate: CardResponse) => {
+      const { data } = await api.put<CardResponse>(`/card/${cardToCreate.id}`, {
+        ...cardToCreate,
+        position: cardToCreate.position - 1,
+      });
+
+      if (data.boardId !== cardToCreate.boardId) {
+        await get().actions.freshBoards();
+      } else {
+        const res = await api.get<BoardResponse>(`/board/${data.boardId}`);
+
+        set((state) => ({
+          boards: state.boards.map((b) => {
+            if (b.id === data.boardId) {
+              return {
+                ...b,
+                cards: res.data.cards,
+              };
+            }
+            return b;
+          }),
+        }));
+      }
+    },
   },
 }));
 
@@ -47,3 +90,9 @@ export const useBoards = () => useBoardStore((state) => state.boards);
 
 export const useDeleteCard = () =>
   useBoardStore((state) => state.actions.deleteCard);
+
+export const useCreateCard = () =>
+  useBoardStore((state) => state.actions.createCard);
+
+export const useUpdateCard = () =>
+  useBoardStore((state) => state.actions.updateCard);
