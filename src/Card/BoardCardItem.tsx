@@ -3,6 +3,7 @@ import type { CardResponse } from "./type";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import EditCard from "./EditCard";
 import { api } from "@/lib/api";
+import type { BoardResponse } from "@/Board/type";
 
 export default function BoardCardItem({
   card,
@@ -21,7 +22,10 @@ export default function BoardCardItem({
   const handleDelete = async () => {
     try {
       await api.delete(`/card/${card.id}`);
-      setCards(cards.filter((c) => c.id !== card.id));
+
+      const { data } = await api.get<BoardResponse>(`/board/${card.boardId}`);
+
+      setCards([...data.cards]);
     } catch (error) {
       setError("Error on card deleting.");
     }
