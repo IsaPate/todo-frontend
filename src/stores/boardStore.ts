@@ -14,6 +14,7 @@ type BoardActions = {
   deleteCard: (card: CardResponse) => Promise<void>;
   createCard: (cardToCreate: Omit<CardResponse, "id">) => Promise<void>;
   updateCard: (cardToCreate: Omit<CardResponse, "id">) => Promise<void>;
+  deleteBoard: (boardId: number) => Promise<void>;
 };
 
 const useBoardStore = create<BoardState>()((set, get) => ({
@@ -80,6 +81,13 @@ const useBoardStore = create<BoardState>()((set, get) => ({
         }));
       }
     },
+    deleteBoard: async (boardId: number) => {
+      await api.delete(`/board/${boardId}`);
+
+      set((state) => ({
+        boards: state.boards.filter((b) => b.id !== boardId),
+      }));
+    },
   },
 }));
 
@@ -96,3 +104,6 @@ export const useCreateCard = () =>
 
 export const useUpdateCard = () =>
   useBoardStore((state) => state.actions.updateCard);
+
+export const useDeleteBoard = () =>
+  useBoardStore((state) => state.actions.deleteBoard);
