@@ -26,19 +26,6 @@ export default function EditCard({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const { data } = await api.put<CardResponse>(`/card/${card.id}`, {
-    //   ...form,
-    //   position: form.position - 1,
-    // });
-
-    // if (data.boardId !== card.boardId) {
-    //   console.log("triggered");
-    //   await fetchBoards();
-    // } else {
-    //   const res = await api.get<BoardResponse>(`/board/${card.boardId}`);
-    //   setCards([...res.data.cards]);
-    // }
-
     await updateCard(form);
 
     onClosing();

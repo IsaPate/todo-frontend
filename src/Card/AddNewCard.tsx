@@ -12,7 +12,6 @@ export default function AddNewCard({
   status,
   position,
   onClosing,
-  cards,
 }: {
   boardId: number;
   status: string;
@@ -52,14 +51,6 @@ export default function AddNewCard({
     setTitleError(null);
     setReqError(null);
     try {
-      // const { data } = await api.post<CardResponse>("/card", {
-      //   title,
-      //   description,
-      //   status,
-      //   position,
-      //   boardId,
-      // });
-      // setCards([...cards, data]);
       const casted = status as CardStatus;
       await createCard({
         title,

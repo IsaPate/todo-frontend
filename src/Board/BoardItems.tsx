@@ -11,10 +11,8 @@ import { api } from "@/lib/api";
 
 export default function BoardItem({
   board,
-  fetchBoards,
 }: {
   board: BoardResponse;
-  // setBoards: Dispatch<SetStateAction<BoardResponse[]>>;
   fetchBoards: () => Promise<void>;
 }) {
   const status = ["TODO", "IN_PROGRESS", "DONE"];
@@ -23,7 +21,6 @@ export default function BoardItem({
     status: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // const [cards, setCards] = useState<CardResponse[]>(board.cards);
 
   const incard_status = (c: CardResponse) => {
     return status.find((s) => s === c.status);

@@ -14,13 +14,7 @@ export default function BoardCardItem({ card }: { card: CardResponse }) {
 
   const handleDelete = async () => {
     try {
-      // await api.delete(`/card/${card.id}`);
-
-      // const { data } = await api.get<BoardResponse>(`/board/${card.boardId}`);
-
       await deleteCards(card);
-
-      // setCards([...data.cards]);
     } catch (error) {
       setError("Error on card deleting.");
     }
