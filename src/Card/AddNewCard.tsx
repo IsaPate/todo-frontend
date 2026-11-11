@@ -1,8 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
-import { useState, type Dispatch, type SetStateAction } from "react";
-import { api } from "@/lib/api";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { CardResponse, CardStatus } from "./type";
 import { useCreateCard } from "@/stores/boardStore";

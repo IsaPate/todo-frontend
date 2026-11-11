@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { api } from "../lib/api";
-import type { BoardResponse } from "./type";
 import BoardItem from "./BoardItems";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
@@ -8,7 +6,6 @@ import NotFound from "@/error/NotFound";
 import { useBoards, useFetchBoards } from "@/stores/boardStore";
 
 export default function Boards() {
-  // const [boards, setBoards] = useState<BoardResponse[]>([]);
   const [status, setStatus] = useState<string>("loading");
   const freshBoards = useFetchBoards();
   const boards = useBoards();
@@ -17,8 +14,6 @@ export default function Boards() {
     try {
       await freshBoards();
       setStatus("success");
-      // setBoards(boards);
-      // console.log(boards);
     } catch (error) {
       setStatus("Not Found");
       console.error(error);

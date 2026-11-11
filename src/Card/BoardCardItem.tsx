@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { CardResponse } from "./type";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import EditCard from "./EditCard";
-import { api } from "@/lib/api";
-import type { BoardResponse } from "@/Board/type";
 import { useDeleteCard } from "@/stores/boardStore";
 
 export default function BoardCardItem({ card }: { card: CardResponse }) {

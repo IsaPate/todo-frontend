@@ -5,9 +5,8 @@ import { type CardResponse } from "@/Card/type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
-import { api } from "@/lib/api";
 import { useDeleteBoard } from "@/stores/boardStore";
 
 export default function BoardItem({
@@ -24,10 +23,6 @@ export default function BoardItem({
   const [error, setError] = useState<string | null>(null);
 
   const deleteBoard = useDeleteBoard();
-
-  const incard_status = (c: CardResponse) => {
-    return status.find((s) => s === c.status);
-  };
 
   const isOpen = (board: BoardResponse, status: string) => {
     return board.id === openColumn?.boardId && openColumn?.status === status;

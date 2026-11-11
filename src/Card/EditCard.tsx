@@ -3,9 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import type { CardResponse, CardStatus } from "./type";
 import { Button } from "@/components/ui/button";
-import { api } from "@/lib/api";
-import { useState, type Dispatch, type SetStateAction } from "react";
-import type { BoardResponse } from "@/Board/type";
+import { useState } from "react";
 import { useUpdateCard } from "@/stores/boardStore";
 
 export default function EditCard({
