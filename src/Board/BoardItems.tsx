@@ -8,6 +8,7 @@ import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router";
 import { api } from "@/lib/api";
+import { useDeleteBoard } from "@/stores/boardStore";
 
 export default function BoardItem({
   board,
@@ -21,6 +22,8 @@ export default function BoardItem({
     status: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const deleteBoard = useDeleteBoard();
 
   const incard_status = (c: CardResponse) => {
     return status.find((s) => s === c.status);
@@ -51,8 +54,7 @@ export default function BoardItem({
 
   const handleDelete = async () => {
     try {
-      await api.delete(`/board/${board.id}`);
-      // setBoards(boards.filter((b) => b.id !== board.id));
+      await deleteBoard(board.id);
       setError(null);
     } catch (error) {
       setError("Error on board deleting.");
