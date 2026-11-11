@@ -14,7 +14,7 @@ type BoardActions = {
   deleteCard: (card: CardResponse) => Promise<void>;
 };
 
-export const useBoardStore = create<BoardState>()((set) => ({
+const useBoardStore = create<BoardState>()((set) => ({
   boards: [],
   actions: {
     freshBoards: async () => {
