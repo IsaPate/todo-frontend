@@ -4,7 +4,8 @@ import { Label } from "@radix-ui/react-label";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import type { CardResponse } from "./type";
+import type { CardResponse, CardStatus } from "./type";
+import { useCreateCard } from "@/stores/boardStore";
 
 export default function AddNewCard({
   boardId,
@@ -12,14 +13,12 @@ export default function AddNewCard({
   position,
   onClosing,
   cards,
-  setCards,
 }: {
   boardId: number;
   status: string;
   position: number;
   onClosing: () => void;
   cards: CardResponse[];
-  setCards: Dispatch<SetStateAction<CardResponse[]>>;
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -27,6 +26,8 @@ export default function AddNewCard({
   const [descError, setDescError] = useState<string | null>(null);
 
   const [reqError, setReqError] = useState<string | null>(null);
+
+  const createCard = useCreateCard();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,14 +52,22 @@ export default function AddNewCard({
     setTitleError(null);
     setReqError(null);
     try {
-      const { data } = await api.post<CardResponse>("/card", {
+      // const { data } = await api.post<CardResponse>("/card", {
+      //   title,
+      //   description,
+      //   status,
+      //   position,
+      //   boardId,
+      // });
+      // setCards([...cards, data]);
+      const casted = status as CardStatus;
+      await createCard({
         title,
         description,
-        status,
+        status: casted,
         position,
         boardId,
       });
-      setCards([...cards, data]);
       onClosing();
     } catch (error) {
       setReqError("Error on form submit.");

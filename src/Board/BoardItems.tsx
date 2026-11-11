@@ -11,13 +11,10 @@ import { api } from "@/lib/api";
 
 export default function BoardItem({
   board,
-  setBoards,
-  boards,
   fetchBoards,
 }: {
   board: BoardResponse;
-  setBoards: Dispatch<SetStateAction<BoardResponse[]>>;
-  boards: BoardResponse[];
+  // setBoards: Dispatch<SetStateAction<BoardResponse[]>>;
   fetchBoards: () => Promise<void>;
 }) {
   const status = ["TODO", "IN_PROGRESS", "DONE"];
@@ -26,7 +23,7 @@ export default function BoardItem({
     status: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [cards, setCards] = useState<CardResponse[]>(board.cards);
+  // const [cards, setCards] = useState<CardResponse[]>(board.cards);
 
   const incard_status = (c: CardResponse) => {
     return status.find((s) => s === c.status);
@@ -38,7 +35,7 @@ export default function BoardItem({
   const groudedCards = (board: BoardResponse): Map<String, CardResponse[]> => {
     const map = new Map<String, CardResponse[]>();
 
-    for (let card of cards) {
+    for (let card of board.cards) {
       if (!map.has(card.status)) {
         map.set(card.status, [card]);
       } else {
@@ -58,7 +55,7 @@ export default function BoardItem({
   const handleDelete = async () => {
     try {
       await api.delete(`/board/${board.id}`);
-      setBoards(boards.filter((b) => b.id !== board.id));
+      // setBoards(boards.filter((b) => b.id !== board.id));
       setError(null);
     } catch (error) {
       setError("Error on board deleting.");
@@ -69,14 +66,14 @@ export default function BoardItem({
       <CardHeader>
         <CardTitle>
           <Link to={`/board/${board.id}`}>{board.name}</Link>
-          <Badge variant="secondary">{cards.length}</Badge>
+          <Badge variant="secondary">{board.cards.length}</Badge>
           <Button onClick={handleDelete}>Delete</Button>
         </CardTitle>
       </CardHeader>
 
       <CardContent>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {cards &&
+          {board.cards &&
             status.map((s) => (
               <div
                 key={s}
@@ -94,15 +91,7 @@ export default function BoardItem({
                 {groudedCards(board).has(s) ? (
                   groudedCards(board)
                     .get(s)
-                    .map((c) => (
-                      <BoardCardItem
-                        key={c.id}
-                        card={c}
-                        cards={cards}
-                        setCards={setCards}
-                        fetchBoards={fetchBoards}
-                      />
-                    ))
+                    .map((c) => <BoardCardItem key={c.id} card={c} />)
                 ) : (
                   <p className="rounded-md border border-dashed py-6 text-center text-xs text-muted-foreground">
                     No cards
@@ -115,8 +104,7 @@ export default function BoardItem({
                       status={openColumn.status}
                       position={getPosition(board, s)}
                       onClosing={() => setOpenColumn(null)}
-                      cards={cards}
-                      setCards={setCards}
+                      cards={board.cards}
                     />
                     <Button
                       className="mt-auto"

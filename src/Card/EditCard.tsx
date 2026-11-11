@@ -6,41 +6,40 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import type { BoardResponse } from "@/Board/type";
+import { useUpdateCard } from "@/stores/boardStore";
 
 export default function EditCard({
   card,
   onCancel,
   onClosing,
-  cards,
-  setCards,
-  fetchBoards,
 }: {
   card: CardResponse;
   onCancel: () => void;
   onClosing: () => void;
-  cards: CardResponse[];
-  setCards: Dispatch<SetStateAction<CardResponse[]>>;
-  fetchBoards: () => Promise<void>;
 }) {
   const [form, setForm] = useState<CardResponse>({
     ...card,
     position: card.position + 1,
   });
 
+  const updateCard = useUpdateCard();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { data } = await api.put<CardResponse>(`/card/${card.id}`, {
-      ...form,
-      position: form.position - 1,
-    });
+    // const { data } = await api.put<CardResponse>(`/card/${card.id}`, {
+    //   ...form,
+    //   position: form.position - 1,
+    // });
 
-    if (data.boardId !== card.boardId) {
-      console.log("triggered");
-      await fetchBoards();
-    } else {
-      const res = await api.get<BoardResponse>(`/board/${card.boardId}`);
-      setCards([...res.data.cards]);
-    }
+    // if (data.boardId !== card.boardId) {
+    //   console.log("triggered");
+    //   await fetchBoards();
+    // } else {
+    //   const res = await api.get<BoardResponse>(`/board/${card.boardId}`);
+    //   setCards([...res.data.cards]);
+    // }
+
+    await updateCard(form);
 
     onClosing();
   };

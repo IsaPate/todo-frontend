@@ -5,16 +5,20 @@ import BoardItem from "./BoardItems";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import NotFound from "@/error/NotFound";
+import { useBoards, useFetchBoards } from "@/stores/boardStore";
 
 export default function Boards() {
-  const [boards, setBoards] = useState<BoardResponse[]>([]);
+  // const [boards, setBoards] = useState<BoardResponse[]>([]);
   const [status, setStatus] = useState<string>("loading");
+  const freshBoards = useFetchBoards();
+  const boards = useBoards();
+
   async function fetchBoards() {
     try {
-      const { data, status } = await api.get<BoardResponse[]>("/boards");
+      await freshBoards();
       setStatus("success");
-      setBoards(data);
-      console.log(data);
+      // setBoards(boards);
+      // console.log(boards);
     } catch (error) {
       setStatus("Not Found");
       console.error(error);
@@ -46,12 +50,7 @@ export default function Boards() {
           <div key={board.id} className="flex flex-col gap-4">
             {/* {board.name} */}
             {board.cards && (
-              <BoardItem
-                board={board}
-                setBoards={setBoards}
-                boards={boards}
-                fetchBoards={fetchBoards}
-              />
+              <BoardItem board={board} fetchBoards={fetchBoards} />
             )}
           </div>
         ))}
